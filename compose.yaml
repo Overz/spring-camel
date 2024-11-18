@@ -1,0 +1,25 @@
+volumes:
+  redis:
+    name: 'redis'
+
+services:
+  redis:
+    image: 'redis:7.4-alpine'
+    hostname: 'redis-svc'
+    restart: 'always'
+    ports:
+      - '6379'
+    network_mode: 'host'
+
+  spring-thymeleaf:
+    image: 'overz/spring-thymeleaf:latest'
+    hostname: 'spring-thymeleaf-svc'
+    restart: 'always'
+    environment:
+      SPRING_PROFILES_ACTIVE: 'prd'
+      APP_PORT: '8080'
+      APP_MANAGMENT_PORT: '9090'
+    ports:
+      - '8080'
+      - '9090'
+    network_mode: 'host'

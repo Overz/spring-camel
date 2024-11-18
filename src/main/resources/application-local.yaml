@@ -1,0 +1,12 @@
+server:
+  error:
+    include-binding-errors: always
+    include-message: always
+    include-path: always
+    include-stacktrace: always
+    include-exception: true
+
+spring:
+  output:
+    ansi:
+      enabled: always

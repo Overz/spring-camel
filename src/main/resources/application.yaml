@@ -1,0 +1,84 @@
+debug: "${DEBUG:false}"
+
+server:
+  port: "${APP_PORT:3000}"
+  address: "${APP_ADDRESS:0.0.0.0}"
+  shutdown: graceful
+  servlet:
+    context-path: "${APP_CONTEXT_PATH:}"
+    session:
+      cookie:
+        http-only: true
+        secure: true
+
+spring:
+  profiles:
+    active: "${SPRING_PROFILES_ACTIVE:local}"
+  application:
+    name: "@project.artifactId@"
+  main:
+    banner-mode: off
+    allow-bean-definition-overriding: true
+  jackson:
+    default-property-inclusion: non_empty
+    deserialization:
+      fail-on-unknown-properties: false
+    serialization:
+      write-dates-as-timestamps: false
+  mvc:
+    problemdetails:
+      enabled: true
+  web:
+    locale: "${APP_LOCALE:en}"
+
+management:
+  server:
+    port: "${APP_MANAGEMENT_PORT:4000}"
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include:
+          - health
+
+# OTHER WAY TO EXPOSE THE CONTRACT
+# NEED TO EXPOSE THE FOLDER IN WebMvcConfigurer#addResourceHandlers(..)
+#springdoc:
+#  api-docs:
+#    enabled: true
+#    path: /v3/api-docs
+#  swagger-ui:
+#    enabled: true
+#    path: "/swagger-ui.html"
+#    urls:
+#      - name: "${spring.application.name} - v1"
+#        url: "/openapi/${spring.application.name}.yaml"
+
+camel:
+  servlet:
+    mapping:
+      context-path: "/*"
+  rest:
+    context-path: "/*"
+    component: "servlet"
+  dataformat:
+    jackson:
+      pretty-print: true
+      auto-discover-object-mapper: true
+      include: "not_empty"
+  openapi:
+    enabled: true
+
+resilience4j:
+  retry:
+    configs:
+      default:
+        max-attempts: "${RESILIENCE4J_MAX_RETRY:4}"
+        wait-duration: "${RESILIENCE4J_WAIT_DURATION:2s}"
+        fail-after-max-attempts: true
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: "${RESILIENCE4J_BACKOFF_MULTIPLIER:1.2}"
+        exponential-max-wait-duration: "${RESILIENCE4J_MAX_WAIT_DURATION:1m}"
+        retry-exceptions:
+          - org.springframework.web.client.RestClientException
+          - java.net.SocketTimeoutException

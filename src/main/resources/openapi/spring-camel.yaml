@@ -1,0 +1,35 @@
+openapi: "3.0.3"
+
+info:
+  title: "spring-camel"
+  description: "Test"
+  version: "0.0.1"
+
+servers:
+  - url: "http://localhost:3000"
+    description: "development server"
+
+tags:
+  - name: "Test"
+    description: "Alguma coisa"
+
+paths:
+  /v1/test:
+    get:
+      summary: "Test endpoint"
+      description: |
+        Return an test response
+      operationId: "getTest"
+      tags:
+        - "Test"
+      responses:
+        200:
+          description: |
+            Test response
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  ok:
+                    type: "boolean"
