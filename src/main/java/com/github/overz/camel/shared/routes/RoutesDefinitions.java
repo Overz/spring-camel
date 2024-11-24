@@ -1,18 +1,19 @@
 package com.github.overz.camel.shared.routes;
 
-import lombok.experimental.UtilityClass;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 
-@UtilityClass
+@NoArgsConstructor(access = AccessLevel.NONE)
 public class RoutesDefinitions {
 
 	/**
-	 * Create and ID base on 'from' used in the route
+	 * Create an ID based on 'from' used in the route
 	 */
-	public String getId(final String from) {
+	public static String getId(final String from) {
 		return from.substring(from.indexOf(':') + 1);
 	}
 
@@ -20,7 +21,7 @@ public class RoutesDefinitions {
 	 * Helpful function to get exchange property
 	 * in camel context route
 	 */
-	public String exP(final String v) {
+	public static String exP(final String v) {
 		return "${exchangeProperty." + v + "}";
 	}
 
@@ -28,7 +29,7 @@ public class RoutesDefinitions {
 	 * Helpful function to get many exchanges properties
 	 * in camel context route
 	 */
-	public String multExP(final String... v) {
+	public static String multExP(final String... v) {
 		return Arrays.stream(v)
 			.map(RoutesDefinitions::exP)
 			.collect(Collectors.joining(","))
