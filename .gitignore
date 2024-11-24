@@ -1,5 +1,6 @@
 tmp
 .env
+!.env.example
 
 HELP.md
 target/
